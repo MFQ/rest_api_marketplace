@@ -9,7 +9,7 @@ RestApiMarketplace::Application.routes.draw do
     scope module: :v1, constraints: ApiConstraints.new(version: 1, defaults: true) do
       # We are going to list our resources here
 
-      resources :users, only:[:users]
+      resources :users, only:[:show]
     end
   end
  
