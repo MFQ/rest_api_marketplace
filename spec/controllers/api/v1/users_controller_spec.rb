@@ -12,7 +12,7 @@ describe Api::V1::UsersController do
     end
 
     it "returns the information about the users in hash" do 
-      user_response = JSON.parse(response.body, symbolize_names: true)
+      user_response = json_response
       expect(user_response[:email]).to eql @user.email
     end
 
@@ -28,7 +28,7 @@ describe Api::V1::UsersController do
       end
 
       it "rendered the json representation for the user just created" do
-        user_response = JSON.parse(response.body, symbolize_names: true)
+        user_response = json_response
         expect(user_response[:email]).to eql @user_attributes[:email]
       end
 
@@ -47,12 +47,12 @@ describe Api::V1::UsersController do
       end
 
       it "render an error json" do
-        user_response = JSON.parse(response.body, symbolize_names: true)
+        user_response = json_response
         expect(user_response).to have_key(:errors)
       end
 
       it "rendered an error why the user was not created" do
-        user_response = JSON.parse(response.body, symbolize_names: true)
+        user_response = json_response
         expect(user_response[:errors][:email]).to include "can't be blank"
       end
 
@@ -68,7 +68,7 @@ describe Api::V1::UsersController do
       end
 
       it "rendered json representation for updaed user" do 
-        user_response = JSON.parse(response.body, symbolize_names:true)
+        user_response = json_response
         expect(user_response[:email]).to eql "newemail@example.com"
       end
 
@@ -82,12 +82,12 @@ describe Api::V1::UsersController do
       end
 
       it "render an error json" do
-        user_response = JSON.parse(response.body, symbolize_names: true)
+        user_response = json_response
         expect(user_response).to have_key(:errors)
       end
 
       it "renderes the json errors why user was not updated" do 
-        user_response = JSON.parse(response.body, symbolize_names: true)
+        user_response = json_response
         expect(user_response[:errors][:email]).to include "is invalid"
       end
 
