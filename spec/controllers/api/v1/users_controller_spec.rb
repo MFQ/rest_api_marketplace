@@ -27,7 +27,7 @@ describe Api::V1::UsersController do
         post :create, { user: @user_attributes }, format: :json 
       end
 
-      it "rendered the json representataion for the user just created" do
+      it "rendered the json representation for the user just created" do
         user_response = JSON.parse(response.body, symbolize_names: true)
         expect(user_response[:email]).to eql @user_attributes[:email]
       end
@@ -51,9 +51,44 @@ describe Api::V1::UsersController do
         expect(user_response).to have_key(:errors)
       end
 
-      it "render an error why the user was not created" do
+      it "rendered an error why the user was not created" do
         user_response = JSON.parse(response.body, symbolize_names: true)
         expect(user_response[:errors][:email]).to include "can't be blank"
+      end
+
+      it { should respond_with 422 }
+    end
+  end
+
+  describe "PUT/PATCH #update" do
+    context "when is successfully updated" do 
+      before(:each) do 
+        @user = FactoryGirl.create :user
+        patch :upate, { id: @user.id, user: { email:"newemail@example.com" } }, format: :json
+      end
+
+      it "rendered json representation for updaed user" do 
+        user_response = JSON.parse(response.body, symbolize_names:true)
+        expect(user_response[:email]).to eql "newemail@example.com"
+      end
+
+      it { should respond_with 201 }
+    end
+    context "when is not created" do 
+
+      before(:each) do 
+        @user = FactoryGirl.create :user
+        patch :update, { id: @user.id, user: { email: "bademail.com" } }, format: :json
+      end
+
+      it "render an error json" do
+        user_response = JSON.parse(response.body, symbolize_names: true)
+        expect(user_response).to have_key(:errors)
+      end
+
+      it "renderes the json errors why user was not updated" do 
+        user_response = JSON.parse(response.body, symbolize_names: true)
+        expect(user_response[:errors][:email]).to include "is invalid"
       end
 
       it { should respond_with 422 }
