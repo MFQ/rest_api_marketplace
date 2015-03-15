@@ -64,7 +64,7 @@ describe Api::V1::UsersController do
     context "when is successfully updated" do 
       before(:each) do 
         @user = FactoryGirl.create :user
-        patch :upate, { id: @user.id, user: { email:"newemail@example.com" } }, format: :json
+        patch :update, { id: @user.id, user: { email:"newemail@example.com" } }, format: :json
       end
 
       it "rendered json representation for updaed user" do 
@@ -74,8 +74,8 @@ describe Api::V1::UsersController do
 
       it { should respond_with 201 }
     end
-    context "when is not created" do 
 
+    context "when is not created" do 
       before(:each) do 
         @user = FactoryGirl.create :user
         patch :update, { id: @user.id, user: { email: "bademail.com" } }, format: :json
