@@ -15,6 +15,7 @@
 #  last_sign_in_ip        :inet
 #  created_at             :datetime
 #  updated_at             :datetime
+#  auth_token             :string           default("")
 #
 
 require 'rails_helper'
@@ -30,5 +31,8 @@ RSpec.describe User, type: :model do
   it { should validate_presence_of(:email) }
   it { should validate_confirmation_of(:password) }
   it { should validate_uniqueness_of(:email) }
+
+  it { should validate_uniqueness_of(:auth_token) }
+  it { should respond_to(:auth_token) }
   
 end
