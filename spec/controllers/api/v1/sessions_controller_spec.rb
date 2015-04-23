@@ -5,35 +5,39 @@ require 'rails_helper'
 # end
 
 describe Api::V1::SessionsController do 
-	before(:each) do 
-		@user = FactoryGirl.create :user
-	end
 
-	context "when credentials are correct" do
+	describe "POST #create" do
 		before(:each) do 
-			credentials = { email: @user.email, password: "12345678" }
-			post :create, { session: credentials }
+			@user = FactoryGirl.create :user
 		end
 
-		it "return user record coressponding credentials" do 
-			@user.reload
-			expect(json_response[:auth_token]).to eql @user.auth_token
-		end
-		it { should respond_with 200 }
+		context "when credentials are correct" do
+			before(:each) do 
+				credentials = { email: @user.email, password: "12345678" }
+				post :create, { session: credentials }
+			end
 
-	end
+			it "return user record coressponding credentials" do 
+				@user.reload
+				expect(json_response[:auth_token]).to eql @user.auth_token
+			end
+			it { should respond_with 200 }
 
-	context "when credentials are incorrect" do
-		before(:each) do 
-			credentials = {email: @user.email, password: "invalide_password"}
-			post :create, { session: credentials }
-		end
-
-		it "return an error json message" do 
-      expect(json_response[:errors]).to eql "Invalid email or password"
 		end
 
-		it { should respond_with 422 }
+		context "when credentials are incorrect" do
+			before(:each) do 
+				credentials = {email: @user.email, password: "invalide_password"}
+				post :create, { session: credentials }
+			end
+
+			it "return an error json message" do 
+	      expect(json_response[:errors]).to eql "Invalid email or password"
+			end
+
+			it { should respond_with 422 }
+		end
+
 	end
 
 end
