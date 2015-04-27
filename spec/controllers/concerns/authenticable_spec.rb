@@ -1,6 +1,8 @@
 require 'spec_helper'
+require "action_controller"
 
-class Authentication
+
+class Authentication < ActionController::Base
   include Authenticable
 end
 
@@ -18,27 +20,11 @@ describe Authenticable do
     end
   end
 
-  # describe "#authenticate_with_token" do 
-  #   before do
-  #     @user = FactoryGirl.create :user
-  #     authentication.stub(:current_user).and_return(nil)
-  #     response.stub(:response_code).and_return(401)
-  #     response.stub(:body).and_return({"errors" => "Not authenticated"}.to_json)
-  #     authentication.stub(:response).and_return(response)
-  #   end
-
-  #   it "render a json error message" do 
-  #     expect(json_response[:errors]).to eql "Not authenticated"
-  #   end
-
-  #   it {  should respond_with 401 }
-  # end
-
   describe "#authenticate_with_token" do
     before do
       @user = FactoryGirl.create :user
       authentication.stub(:current_user).and_return(nil)
-      response.stub(:response_code).and_return(401)
+      response.stub(:status).and_return(401)
       response.stub(:body).and_return({"errors" => "Not authenticated"}.to_json)
       authentication.stub(:response).and_return(response)
     end
@@ -47,7 +33,7 @@ describe Authenticable do
       expect(json_response[:errors]).to eql "Not authenticated"
     end
 
-    it {  should respond_with 401 }
+    it { expect(response.status).to eq 401 }
   end
 
 end
