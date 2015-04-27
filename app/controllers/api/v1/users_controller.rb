@@ -17,7 +17,7 @@ module Api
       end
 
       def update
-        user = User.find(params[:id])
+        user = current_user
 
         if user.update(user_params)
           render json: user, status: 201, location: [:api, user]
@@ -27,8 +27,7 @@ module Api
       end
 
       def destroy
-        user = User.find(params[:id])
-        user.destroy
+        current_user.destroy
         head 204
       end
       
