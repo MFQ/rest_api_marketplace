@@ -23,6 +23,15 @@ module Api
 				end
 			end
 
+			def update
+				product = current_user.products.find(params[:id])
+				if product.update(product_params)
+					render json: product, status: 200, location: [:api, product]
+    		else
+      		render json: { errors: product.errors }, status: 422
+				end
+			end
+
 			private
 
 			def product_params
