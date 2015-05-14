@@ -2,6 +2,17 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::ProductsController, type: :controller do
 
+	describe "DELETE #destroy" do
+    before(:each) do
+      @user = FactoryGirl.create :user
+      @product = FactoryGirl.create :product, user: @user
+      request.headers["Authorization"] = @user.auth_token
+      delete :destroy, { user_id: @user.id, id: @product.id }
+    end
+
+    it { should respond_with 204 }
+  end
+
 	describe "PUT/PATCH #update" do
 
 		before(:each) do

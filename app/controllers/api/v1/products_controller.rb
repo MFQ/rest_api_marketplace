@@ -32,6 +32,12 @@ module Api
 				end
 			end
 
+			def destroy
+    		product = current_user.products.find(params[:id])
+    		product.destroy
+    		head 204
+  		end
+
 			private
 
 			def product_params
