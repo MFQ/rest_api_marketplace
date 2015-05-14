@@ -7,6 +7,11 @@ module Api
 				render json: @product, status: 200
 			end
 
+			def index
+				@products = Product.all
+				render json: { products: @products, status: 200 }
+			end
+
 		end
 	end
 end
