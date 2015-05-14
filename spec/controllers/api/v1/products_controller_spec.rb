@@ -2,6 +2,51 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::ProductsController, type: :controller do
 
+	describe "POST #create" do 
+
+		context "when product is created" do 
+
+			before(:each) do 
+				@user = FactoryGirl.create(:user)
+				request.headers["Authorization"] = @user.auth_token
+        @product_attributes = FactoryGirl.attributes_for :product
+				post :create, { user_id: @user.id, product: @product_attributes }
+			end
+
+			it "renders the json representation for the product record just created" do 
+				product_response = json_response
+				expect(product_response[:title]).to eq(@product_attributes[:title])
+			end
+
+			it { should respond_with 201 }
+
+		end
+
+		context "whne product is not created" do 
+
+			before(:each) do
+				@user = FactoryGirl.create(:user)
+				request.headers["Authorization"] = @user.auth_token
+				@invalid_product_attributes = { price: "I am price", title: "I am title" }
+				post :create, { user_id: @user.id, product: @invalid_product_attributes }
+			end
+
+			it "renders an errors json" do
+        product_response = json_response
+        expect(product_response).to have_key(:errors)
+      end
+
+      it "renders the json errors on whye the user could not be created" do
+        product_response = json_response
+        expect(product_response[:errors][:price]).to include "is not a number"
+      end
+
+      it { should respond_with 422 }
+
+		end
+
+	end
+
 	describe "GET #show" do
 		before(:each) do
 			@product = FactoryGirl.create :product 
@@ -9,8 +54,8 @@ RSpec.describe Api::V1::ProductsController, type: :controller do
 		end
 
 		it "will return product hash " do 
-			product_respone = json_response
-			expect(product_respone[:title]).to eq(@product.title)
+			product_response = json_response
+			expect(product_response[:title]).to eq(@product.title)
 		end
 
 		it { should respond_with 200 }
@@ -23,8 +68,8 @@ RSpec.describe Api::V1::ProductsController, type: :controller do
 		end
 
 		it "will return products " do
-			product_respone = json_response
-			expect(product_respone[:products].length).to eq(5)
+			product_response = json_response
+			expect(product_response[:products].length).to eq(5)
 		end
 
 		it { should respond_with 200 }
