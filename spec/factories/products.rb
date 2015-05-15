@@ -14,9 +14,9 @@
 FactoryGirl.define do
   factory :product do
     title { Faker::Product.product_name }
-		price { rand() * 100 }
-		published false
-		user_id 1
+		price { rand(1..10) * 100 }
+		published true
+		user
   end
 
 end
