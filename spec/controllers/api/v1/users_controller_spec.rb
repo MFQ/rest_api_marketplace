@@ -13,7 +13,7 @@ describe Api::V1::UsersController do
     end
 
     it "returns the information about the users in hash" do 
-      user_response = json_response
+      user_response = json_response[:user]
       expect(user_response[:email]).to eql @user.email
     end
 
@@ -29,7 +29,7 @@ describe Api::V1::UsersController do
       end
 
       it "rendered the json representation for the user just created" do
-        user_response = json_response
+        user_response = json_response[:user]
         expect(user_response[:email]).to eql @user_attributes[:email]
       end
 
@@ -71,7 +71,7 @@ describe Api::V1::UsersController do
 
       it "rendered json representation for updaed user" do 
         user_response = json_response
-        expect(user_response[:email]).to eql "newemail@example.com"
+        expect(user_response[:user][:email]).to eql "newemail@example.com"
       end
 
       it { should respond_with 201 }

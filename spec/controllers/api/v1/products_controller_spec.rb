@@ -29,7 +29,7 @@ RSpec.describe Api::V1::ProductsController, type: :controller do
 
 			it "renders the json representation for the updated user" do
         product_response = json_response
-        expect(product_response[:title]).to eql "I am new title"
+        expect(product_response[:product][:title]).to eql "I am new title"
       end
 
       it { should respond_with 200 }
@@ -69,7 +69,7 @@ RSpec.describe Api::V1::ProductsController, type: :controller do
 
 			it "renders the json representation for the product record just created" do 
 				product_response = json_response
-				expect(product_response[:title]).to eq(@product_attributes[:title])
+				expect(product_response[:product][:title]).to eq(@product_attributes[:title])
 			end
 
 			it { should respond_with 201 }
@@ -107,9 +107,14 @@ RSpec.describe Api::V1::ProductsController, type: :controller do
 			get :show, id: @product.id
 		end
 
+		it "has the user as a embeded object" do 
+			product_response = json_response[:product]
+			expect(product_response[:user][:email]).to eql @product.user.email
+		end
+
 		it "will return product hash " do 
 			product_response = json_response
-			expect(product_response[:title]).to eq(@product.title)
+			expect(product_response[:product][:title]).to eq(@product.title)
 		end
 
 		it { should respond_with 200 }
@@ -119,6 +124,11 @@ RSpec.describe Api::V1::ProductsController, type: :controller do
 		before(:each) do
 			5.times { FactoryGirl.create :product }
 			get :index
+		end
+
+		it "return the user object into each product" do 
+			products_response = json_response[:products]
+			products_response.each { |product_response| expect(product_response[:user]).to be_present  }
 		end
 
 		it "will return products " do

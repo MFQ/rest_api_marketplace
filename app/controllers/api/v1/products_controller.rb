@@ -11,7 +11,7 @@ module Api
 
 			def index
 				@products = Product.all
-				render json: { products: @products, status: 200 }
+				render json: @products, status: 200
 			end
 
 			def create
