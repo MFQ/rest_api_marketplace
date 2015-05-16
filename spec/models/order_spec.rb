@@ -24,4 +24,7 @@ RSpec.describe Order, type: :model do
 
   it { should belong_to :user }
 
+  it { should have_many :placements }
+  it { should have_many(:products).through(:placements) }
+
 end
