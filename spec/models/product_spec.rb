@@ -30,4 +30,25 @@ RSpec.describe Product, type: :model do
   it { should validate_presence_of :user_id }
   it { should belong_to :user }
 
+  describe ".filter_by_title" do
+
+    before(:each) do
+      @product1 = FactoryGirl.create :product, title: "A plasma TV"
+      @product2 = FactoryGirl.create :product, title: "Fastest Laptop"
+      @product3 = FactoryGirl.create :product, title: "CD player"
+      @product4 = FactoryGirl.create :product, title: "LCD TV"
+    end
+
+    context "when TV title pattern is sent" do 
+      it "retrun the 2 products matching" do 
+        expect(Product.filter_by_title("TV").sort.length).to eq(2)
+      end
+
+      it "return the products match" do 
+        expect(Product.filter_by_title("TV").sort).to match_array([@product1, @product4])
+      end
+    end
+
+  end
+
 end
