@@ -10,7 +10,7 @@ RSpec.describe Api::V1::OrdersController, type: :controller do
 
 	it "returns 4 order records from the user" do
     orders_response = json_response[:orders]
-    expect(orders_response.length).to eq(4) #have(4).items
+    expect(orders_response.length).to eq(4)
   end
 
    it { should respond_with 200 }
