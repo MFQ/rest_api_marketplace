@@ -12,7 +12,8 @@ RestApiMarketplace::Application.routes.draw do
       resources :users, only:[:show, :create, :update, :destroy]
       resources :sessions, only:[:create, :destroy]
       resources :products, only:[:show, :index, :create, :update, :destroy]
-      resources :orders, only:[:index]
+      resources :orders, only:[:index, :show]
+      
     end
   end
  

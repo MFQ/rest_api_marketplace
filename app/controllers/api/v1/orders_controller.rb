@@ -8,6 +8,10 @@ module Api
 		    render json: current_user.orders, status: 200
 		  end
 
+		  def show
+		  	  render json: current_user.orders.find(params[:id])
+		  end
+
 		end
 	end
 end
